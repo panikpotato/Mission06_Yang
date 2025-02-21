@@ -23,24 +23,75 @@ namespace Mission06_Yang.Controllers
 
         [HttpGet]
         public IActionResult FormPage()
+            
         {
-            return View();
+            ViewBag.Categories =_context.Categories;
+
+            return View("FormPage", new Movies());
         }
         [HttpPost]
-        public IActionResult FormPage(Application response)
+        public IActionResult FormPage(Movies response)
         {
-            _context.Applications.Add(response);
-            _context.SaveChanges();
+            if (ModelState.IsValid)
+            {
+                _context.Movies.Add(response);
+                _context.SaveChanges();
+                ViewBag.Categories = _context.Categories;
 
-            return View("Confirmation",response);
+                return View("Confirmation", response);
+            }
+            else
+            {
+                ViewBag.Categories = _context.Categories;
+                return View(response);
+            }
         }
 
 
         public IActionResult GettoKnowJoel()
         {
-            
+
             return View();
         }
+        public IActionResult Waitlist()
+        {
+            var applications = _context.Movies
+                .Where(x => x.Edited == true)
+                .OrderBy(x => x.Year).ToList();
 
+            return View(applications);
+        }
+        [HttpGet]
+        public IActionResult Edit(int id)
+        {   var recordToEdit = _context.Movies
+                .Single(x => x.MovieId ==id);
+            ViewBag.Categories = _context.Categories;
+
+
+            return View("FormPage", recordToEdit );
+        }
+
+        [HttpPost]
+        public IActionResult Edit(Movies updatedInfo)
+        {
+            _context.Update(updatedInfo);
+            _context.SaveChanges();
+            return RedirectToAction("Waitlist");
+        }
+        [HttpGet]
+        public IActionResult Delete(int id)
+        {
+            var recordToDelete = _context.Movies
+                .Single(x => x.MovieId == id);
+
+            return View(recordToDelete);
+        }
+        [HttpPost]
+        public IActionResult Delete(Movies application)
+        {
+            _context.Movies.Remove(application);
+            _context.SaveChanges();
+            return RedirectToAction("Waitlist");
+        }
     }
 }

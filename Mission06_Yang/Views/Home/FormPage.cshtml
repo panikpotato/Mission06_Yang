@@ -4,11 +4,21 @@
 @{
 }
 
-@model Mission06_Yang.Models.Application
+@model Mission06_Yang.Models.Movies
 <h1 style="text-align: center;">This is the form page</h1>
 <form method="post">
-    <label asp-for="Category">Category</label>
-    <input asp-for="Category">
+  
+    <input type = "hidden" asp-for="MovieId" />
+
+    
+    <select asp-for="CategoryId">
+        <option value ="">Select a Category</option>
+		@foreach (Category c in ViewBag.Categories)
+		{
+			<option value="@c.CategoryId">@c.CategoryName</option>
+		})
+
+    </select>
     <br />
     <br />
     <label asp-for="Title">Title</label>
@@ -32,8 +42,8 @@
     </select>
     <br />
     <br />
-    <label asp-for="Edit">Edit</label>
-    <select asp-for="Edit">
+    <label asp-for="Edited">Edit</label>
+    <select asp-for="Edited">
         <option value="true">Yes</option>
         <option value="false">No</option>
     </select>
@@ -43,9 +53,23 @@
     <input asp-for="LentTo">
     <br />
     <br />
+
+    <label asp-for="CopiedToPlex">Copied To Plex</label>
+    <select asp-for="CopiedToPlex">
+        <option value="1">Yes</option>
+        <option value="0">No</option>
+    </select>
+    <br />
+    <br />
+
+
+
+
     <label asp-for="Notes">Notes</label>
     <input asp-for="Notes" maxlength="25">
     <br />
     <br />
 	<button type="submit">Submit Form</button>
+
+    <div asp-validation-summary="All"></div>
 </form>
