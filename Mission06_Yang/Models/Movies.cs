@@ -8,10 +8,11 @@ namespace Mission06_Yang.Models
         [Key]
         [Required]
         public int MovieId { get; set; }
-        [Required]
+        
         [ForeignKey("CategoryId")]
-        public int? CategoryId { get; set; }
-        public Category Category { get; set; }
+        public int CategoryId { get; set; }
+        
+        public Category? Category { get; set; }
         [Required]
         public string Title { get; set; }
         
